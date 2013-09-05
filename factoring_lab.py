@@ -83,7 +83,20 @@ def find_candidates(N, primeset):
                    primeset-vector over GF(2) corresponding to a_i
           such that len(roots) = len(rowlist) and len(roots) > len(primeset)
     '''
-    pass
+    roots = list()
+    rowlist = list()
+    
+    x = intsqrt(N) +2
+    
+    while (len(roots) < (len(primeset)+1)):
+        
+        dumb_factored = dumb_factor(x**2-N,primeset)
+        if len(dumb_factored) != 0:
+            roots = roots + [x]
+            rowlist = rowlist + [make_Vec(primeset,dumb_factored)]
+        
+        x+=1
+    return roots,rowlist
 
 
 
@@ -99,8 +112,17 @@ def find_a_and_b(v, roots, N):
       such that a*a-b*b is a multiple of N
       (if v is correctly chosen)
     '''
-    pass
+    alist = [ roots[x] for x in v.D if v[x] != 0 ]
+    a = prod(alist)
+    c = prod([ x*x - N for x in alist ])
+    b = intsqrt(c)
+    assert b*b == c
+    
+    return a,b
+    
+    
+    
 
 ## Task 5
 
-smallest_nontrivial_divisor_of_2461799993978700679 = ... 
+smallest_nontrivial_divisor_of_2461799993978700679 = 1230926561
