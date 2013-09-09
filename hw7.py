@@ -109,7 +109,7 @@ least_squares_Q1 = listlist2mat([[.8,-0.099],[.6, 0.132],[0,0.986]])
 least_squares_R1 = listlist2mat([[10,2],[0,6.08]]) 
 least_squares_b1 = list2vec([10, 8, 6])
 
-x_hat_1 = ...
+x_hat_1 = Vec({0, 1},{0: 1.0832236842105263, 1: 0.9838815789473685})
 
 
 least_squares_A2 = listlist2mat([[3, 1], [4, 1], [5, 1]])
@@ -117,7 +117,7 @@ least_squares_Q2 = listlist2mat([[.424, .808],[.566, .115],[.707, -.577]])
 least_squares_R2 = listlist2mat([[7.07, 1.7],[0,.346]])
 least_squares_b2 = list2vec([10,13,15])
 
-x_hat_2 = ...
+x_hat_2 = Vec({0, 1},{0: 2.501098838207519, 1: 2.658959537572254})
 
 
 
@@ -139,5 +139,12 @@ def QR_solve(A, b):
         >>> result * result < 1E-10
         True
     '''
-    pass
-
+    from triangular import triangular_solve
+    from QR import factor
+    from matutil import mat2rowdict
+    
+    Q,R = factor(A)
+    rowlist = [mat2rowdict(R)[v] for v in mat2rowdict(R)]
+    label_list = sorted(A.D[1], key = repr)
+    
+    return triangular_solve(rowlist, label_list, b*Q)
